@@ -65,7 +65,6 @@ def VGGUnet(n_classes, vgg_level=3):
     
     vgg = Model(img_input, x)
     vgg.load_weights(VGG_Weights_path)
-    print(vgg.summary())
 
     levels = [f1, f2, f3, f4, f5 ]
 
@@ -115,6 +114,6 @@ def VGGUnet(n_classes, vgg_level=3):
 if __name__ == '__main__':
     set_keras_backend("theano")
     m, output_width, output_height = VGGUnet(7, vgg_level=3)
-    print(m.summary())
+    # print(m.summary())
     with open('segNet_basic_model_theano.json', 'w') as outfile:
         outfile.write(json.dumps(json.loads(m.to_json()), indent=2))
