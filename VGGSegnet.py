@@ -66,7 +66,7 @@ def VGGUnet(n_classes, vgg_level=3):
     vgg = Model(img_input, x)
     vgg.load_weights(VGG_Weights_path)
 
-    levels = [f1, f2, f3, f4, f5 ]
+    levels = [f1, f2, f3, f4, f5]
 
     o = f4
 
@@ -75,7 +75,7 @@ def VGGUnet(n_classes, vgg_level=3):
     o = (BatchNormalization())(o)
 
     o = (UpSampling2D((2, 2), data_format=IMAGE_ORDERING))(o)
-    o = (concatenate([ o, f3], axis=1))
+    o = (concatenate([o, f3], axis=1))
     o = (ZeroPadding2D((1, 1), data_format=IMAGE_ORDERING))(o)
     o = (Conv2D(256, (3, 3), padding='valid', data_format=IMAGE_ORDERING))(o)
     o = (BatchNormalization())(o)

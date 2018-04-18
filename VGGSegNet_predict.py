@@ -2,8 +2,8 @@ import LoadBatches
 import glob
 from VGGSegnet import VGGUnet, set_keras_backend
 import numpy as np
-from keras.preprocessing.image import array_to_img
 import cv2
+import os
 
 Building = [0, 0, 255]
 Grass = [0, 255, 0]
@@ -13,14 +13,14 @@ Roads = [0, 255, 255]
 NotAirplanes = [252, 40, 252]
 Unlabelled = [255, 0, 0]
 
-colors = np.array([Unlabelled, Grass, Development, Concrete, Roads, NotAirplanes, Building])
+colors = np.array([Building, Grass, Development, Concrete, Roads, NotAirplanes, Unlabelled])
 
 n_classes = 7
-images_path = '/Users/kate/PycharmProjects/make_data/VGG_SegNet/test/'
+images_path = 'data/test/'
 input_width = 416
 input_height = 608
-save_weights_path = '/Users/kate/PycharmProjects/Segnet/weights/VGGSegNet/'
-output_path = '/Users/kate/PycharmProjects/Segnet/imgs_results/res4/'
+save_weights_path = 'weights/VGGSegNet/'
+output_path = 'imgs_results/res5/'
 DataPath = 'data/'
 
 
@@ -43,7 +43,7 @@ def visualize(temp):
 if __name__ == '__main__':
     set_keras_backend("theano")
     m, output_width, output_height = VGGUnet(7, vgg_level=3)
-    m.load_weights(save_weights_path + "model.10")
+    m.load_weights(save_weights_path + "weights.best.hdf5")
     m.compile(loss='categorical_crossentropy',
               optimizer='adadelta',
               metrics=['accuracy'])
@@ -54,10 +54,12 @@ if __name__ == '__main__':
     gt = []
     with open(DataPath + 'test.txt') as f:
         txt = f.readlines()
-        txt = [line.split(' ') for line in txt]
+        txt = [line.split('\n') for line in txt]
+    print(txt)
 
     for i in range(len(txt)):
-        gt.append(cv2.imread('/Users/kate/PycharmProjects/make_data/VGG_Segnet/test/' + txt[i][0][64:]))
+        print(os.getcwd() + '/data/test/' + txt[i][0])
+        gt.append(cv2.imread(os.getcwd() + '/data/test/' + txt[i][0]))
 
     i = 0
     for imgName in images:
