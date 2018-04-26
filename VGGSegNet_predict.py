@@ -21,6 +21,11 @@ input_width = 416
 input_height = 608
 save_weights_path = 'weights/VGGSegNet/'
 output_path = 'imgs_results/res5/'
+images_path = 'data/res/'
+input_width = 416
+input_height = 608
+save_weights_path = 'weights/VGGSegNet/'
+output_path = 'imgs_results/res7/'
 DataPath = 'data/'
 
 
@@ -50,7 +55,6 @@ if __name__ == '__main__':
 
     images = glob.glob(images_path + "*.png")
     images.sort()
-
     gt = []
     with open(DataPath + 'test.txt') as f:
         txt = f.readlines()
@@ -60,7 +64,15 @@ if __name__ == '__main__':
     for i in range(len(txt)):
         print(os.getcwd() + '/data/test/' + txt[i][0])
         gt.append(cv2.imread(os.getcwd() + '/data/test/' + txt[i][0]))
-
+    # gt = []
+    # with open(DataPath + 'test.txt') as f:
+    #     txt = f.readlines()
+    #     txt = [line.split('\n') for line in txt]
+    # print(txt)
+    #
+    # for i in range(len(txt)):
+    #     print(os.getcwd() + '/data/test/' + txt[i][0])
+    #     gt.append(cv2.imread(os.getcwd() + '/data/test/' + txt[i][0]))
     i = 0
     for imgName in images:
 
@@ -75,4 +87,5 @@ if __name__ == '__main__':
             seg_img[:, :, 2] += ((pr[:, :] == c) * (colors[c][2])).astype('uint8')
         cv2.imwrite(outName, seg_img)
         cv2.imwrite(outName + str(i) + '.png', gt[i])
+        # cv2.imwrite(outName + str(i) + '.png', gt[i])
         i += 1
