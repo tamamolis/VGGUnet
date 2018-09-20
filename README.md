@@ -1,7 +1,7 @@
 ### VGGSegnet
 #### Implementation of U-Net + VGG
 ##### Results
-##### The model was taken from here[https://github.com/divamgupta/image-segmentation-keras/tree/master/Models]
+##### The model was taken from [here](https://github.com/divamgupta/image-segmentation-keras/tree/master/Models)
 ##### first picture -- neuro output, second picture -- neuro ouput + CRF-postprocessing, third picture -- segmented by man, last picure -- original
 
 <p align="center">
