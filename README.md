@@ -1,5 +1,5 @@
 ### VGGSegnet
-#### Naive implementation of SegNet + VGG
+#### Implementation of U-Net + VGG
 ##### Results
 ##### first picture -- neuro output, second picture -- neuro ouput + CRF-postprocessing, third picture -- segmented by man, last picure -- original
 
