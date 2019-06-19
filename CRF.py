@@ -11,7 +11,7 @@ Grass = [0, 255, 0]
 Development = [255, 255, 0]  # стройка
 Concrete = [255, 255, 255]  # бетон
 Roads = [0, 255, 255]
-NotAirplanes = [252, 40, 252]
+NotAirplanes = [252, 0, 252]
 Unlabelled = [255, 0, 0]
 
 legend_list = [Building, Grass, Development, Concrete, Roads, NotAirplanes, Unlabelled]
@@ -94,17 +94,14 @@ def crf(original_image, annotated_image, output_image, use_2d=True):
     if use_2d:
         d = dcrf.DenseCRF2D(original_image.shape[1], original_image.shape[0], n_labels)
 
-        # get unary potentials (neg log probability)
         print('labels: ', labels, len(labels), np.shape(labels))
         print('n_lables: ', n_labels)
         U = unary_from_labels(labels, n_labels, gt_prob=0.7, zero_unsure=False)
         d.setUnaryEnergy(U)
 
-        # This adds the color-independent term, features are the locations only.
         d.addPairwiseGaussian(sxy=(3, 3), compat=3, kernel=dcrf.DIAG_KERNEL,
                               normalization=dcrf.NORMALIZE_SYMMETRIC)
 
-        # This adds the color-dependent term, i.e. features are (x,y,r,g,b).
         d.addPairwiseBilateral(sxy=(80, 80), srgb=(13, 13, 13), rgbim=original_image,
                                compat=10,
                                kernel=dcrf.DIAG_KERNEL,
@@ -112,6 +109,7 @@ def crf(original_image, annotated_image, output_image, use_2d=True):
 
     Q = d.inference(5)
     MAP = np.argmax(Q, axis=0)
+
     # print(MAP)
     # MAP = colorize[MAP, :]
     # imsave(output_image, MAP.reshape(original_image.shape))
@@ -122,10 +120,10 @@ def crf(original_image, annotated_image, output_image, use_2d=True):
 
 if __name__ == '__main__':
 
-    orig = 'img_res/Сочи.jpg'
-    seg = 'img_res/Сочи_сег.png'
+    orig = 'img_res/res_orig1.jpg'
+    seg = 'img_res/res1.jpg'
 
     image = imread(orig)
     seg_image = imread(seg)
 
-    crf(image, seg_image, "img_res/crf_res_Сочи.jpg")
+    crf(image, seg_image, "img_res/crf_res1.jpg")

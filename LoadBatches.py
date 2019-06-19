@@ -6,7 +6,8 @@ import itertools
 
 def getImageArr(path, width, height, imgNorm="sub_mean", odering='channels_first'):
     try:
-        img = cv2.imread(path, 1)
+        # img = cv2.imread(path, 1)
+        img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
 
         if imgNorm == "sub_and_divide":
             img = np.float32(cv2.resize(img, (width, height))) / 127.5 - 1
@@ -20,22 +21,25 @@ def getImageArr(path, width, height, imgNorm="sub_mean", odering='channels_first
             img = cv2.resize(img, (width, height))
             img = img.astype(np.float32)
             img = img / 255.0
-
         if odering == 'channels_first':
             img = np.rollaxis(img, 2, 0)
+            # print('shape 0: ', np.shape(img))
+        # print('shape 1: ', np.shape(img))
         return img
     except (Exception):
         print(path)
         img = np.zeros((height, width, 3))
         if odering == 'channels_first':
             img = np.rollaxis(img, 2, 0)
+            # print('shape 2: ', np.shape(img))
+        # print('shape 3: ', np.shape(img))
         return img
 
 
 def getSegmentationArr(path, nClasses, width, height):
     seg_labels = np.zeros((height, width, nClasses))
     try:
-        img = cv2.imread(path, 1)
+        img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
         img = cv2.resize(img, (width, height))
         img = img[:, :, 0]
 
